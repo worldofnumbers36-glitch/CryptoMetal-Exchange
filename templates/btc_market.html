@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Bitcoin Market{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title"><span class="neon-blue">₿</span> Bitcoin Market</h2>
+</div>
+
+<div class="market-info-bar">
+  <div class="minfo"><span class="minfo-label">Buy Rate</span><span class="minfo-val neon-blue">₹7,500,000 / BTC</span></div>
+  <div class="minfo"><span class="minfo-label">Sell Range</span><span class="minfo-val neon-purple">₹5M – ₹10M / BTC</span></div>
+  <div class="minfo"><span class="minfo-label">Your BTC</span><span class="minfo-val">{{ "%.6f"|format(user.bitcoin) }}</span></div>
+  <div class="minfo"><span class="minfo-label">Your ₹</span><span class="minfo-val">₹{{ "%.2f"|format(user.rupees) }}</span></div>
+</div>
+
+<div class="trade-grid">
+  <div class="trade-card">
+    <h3 class="trade-title buy-title">Buy Bitcoin</h3>
+    <form method="POST">
+      <input type="hidden" name="action" value="buy">
+      <div class="form-group">
+        <label>BTC Amount</label>
+        <input type="number" name="amount" step="0.000001" min="0.000001" placeholder="0.001" required id="btcBuyAmt">
+      </div>
+      <div class="cost-preview" id="buyCostPreview">Cost: —</div>
+      <button type="submit" class="btn btn-buy btn-full">Buy BTC</button>
+    </form>
+  </div>
+
+  <div class="trade-card">
+    <h3 class="trade-title sell-title">Sell Bitcoin</h3>
+    <form method="POST">
+      <input type="hidden" name="action" value="sell">
+      <div class="form-group">
+        <label>BTC Amount</label>
+        <input type="number" name="amount" step="0.000001" min="0.000001" placeholder="0.001" required>
+      </div>
+      <div class="price-note">⚡ Market price generated at sale</div>
+      <button type="submit" class="btn btn-sell btn-full">Sell BTC</button>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('btcBuyAmt').addEventListener('input', function() {
+  const amt = parseFloat(this.value) || 0;
+  const cost = amt * 7500000;
+  document.getElementById('buyCostPreview').textContent = cost > 0 ? `Cost: ₹${cost.toLocaleString('en-IN', {maximumFractionDigits:2})}` : 'Cost: —';
+});
+</script>
+{% endblock %}

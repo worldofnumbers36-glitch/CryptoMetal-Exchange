@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Invest{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title">📈 Investment Desk</h2>
+  <p class="page-sub">Returns range from -10% to +10%, resolved instantly.</p>
+</div>
+
+{% if result %}
+<div class="result-card {% if result.profit >= 0 %}result-win{% else %}result-loss{% endif %}">
+  <div class="result-label">Investment Result</div>
+  <div class="result-row"><span>Invested</span><span>₹{{ "%.2f"|format(result.invested) }}</span></div>
+  <div class="result-row"><span>Return</span><span class="{% if result.pct >= 0 %}pos{% else %}neg{% endif %}">{{ "%+.2f"|format(result.pct) }}%</span></div>
+  <div class="result-row result-final"><span>Final Amount</span><span>₹{{ "%.2f"|format(result.final) }}</span></div>
+</div>
+{% endif %}
+
+<div class="trade-card max-500">
+  <h3 class="trade-title">Invest Rupees</h3>
+  <p class="balance-line">Balance: <strong>₹{{ "%.2f"|format(user.rupees) }}</strong></p>
+  <form method="POST">
+    <div class="form-group">
+      <label>Investment Amount (₹)</label>
+      <input type="number" name="amount" step="0.01" min="1" placeholder="1000" required>
+    </div>
+    <button type="submit" class="btn btn-primary btn-full">Invest Now</button>
+  </form>
+</div>
+
+{% if history %}
+<h3 class="section-title">Recent Investments</h3>
+<div class="history-table-wrap">
+  <table class="history-table">
+    <thead><tr><th>Amount</th><th>Return</th><th>Final</th><th>Date</th></tr></thead>
+    <tbody>
+    {% for t in history %}
+    <tr>
+      <td>₹{{ "%.2f"|format(t.amount) }}</td>
+      <td class="{% if t.note and t.note[0] == '+' %}pos{% else %}neg{% endif %}">{{ t.note }}</td>
+      <td>₹{{ "%.2f"|format(t.result) }}</td>
+      <td class="date-col">{{ t.created_at[:16] }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

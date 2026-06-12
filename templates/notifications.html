@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title">🔔 Notifications</h2>
+</div>
+
+{% if notifications %}
+<div class="notif-list">
+  {% for n in notifications %}
+  <div class="notif-item {% if not n.is_read %}notif-unread{% endif %}">
+    <span class="notif-msg">{{ n.message }}</span>
+    <span class="notif-time">{{ n.created_at[:16] }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">🔔</div>
+  <p>No notifications yet.</p>
+</div>
+{% endif %}
+{% endblock %}

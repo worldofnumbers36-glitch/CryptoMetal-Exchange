@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{ puser.username }}'s Profile{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title">👤 {{ puser.username }}</h2>
+  <div class="rank-badge">{{ rank }}</div>
+</div>
+
+<div class="profile-card">
+  <div class="profile-avatar">{{ puser.username[0].upper() }}</div>
+  <div class="profile-name">{{ puser.username }}</div>
+  <div class="profile-joined">Member since {{ puser.created_at[:10] }}</div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card card-inr">
+    <div class="stat-icon">₹</div>
+    <div class="stat-label">Rupees</div>
+    <div class="stat-value">₹{{ "%.2f"|format(puser.rupees) }}</div>
+  </div>
+  <div class="stat-card card-btc">
+    <div class="stat-icon">₿</div>
+    <div class="stat-label">Bitcoin</div>
+    <div class="stat-value">{{ "%.6f"|format(puser.bitcoin) }} BTC</div>
+  </div>
+  <div class="stat-card card-gold">
+    <div class="stat-icon">🥇</div>
+    <div class="stat-label">Gold</div>
+    <div class="stat-value">{{ "%.4f"|format(puser.gold) }}g</div>
+  </div>
+  <div class="stat-card card-silver">
+    <div class="stat-icon">🥈</div>
+    <div class="stat-label">Silver</div>
+    <div class="stat-value">{{ "%.4f"|format(puser.silver) }}g</div>
+  </div>
+  <div class="stat-card card-wealth full-width">
+    <div class="stat-icon">💰</div>
+    <div class="stat-label">Total Wealth</div>
+    <div class="stat-value wealth-value">₹{{ "%.2f"|format(wealth) }}</div>
+  </div>
+</div>
+
+<div class="profile-actions">
+  <a href="{{ url_for('transfer') }}" class="btn btn-primary">↗ Send Assets</a>
+  <a href="{{ url_for('leaderboard') }}" class="btn btn-outline">🏆 Leaderboard</a>
+</div>
+{% endblock %}

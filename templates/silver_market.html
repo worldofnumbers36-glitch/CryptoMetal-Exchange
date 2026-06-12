@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Silver Market{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title"><span class="neon-silver">🥈</span> Silver Market</h2>
+</div>
+
+<div class="market-info-bar">
+  <div class="minfo"><span class="minfo-label">Buy Rate</span><span class="minfo-val neon-silver">₹1,000 / 3 grams</span></div>
+  <div class="minfo"><span class="minfo-label">Sell Range</span><span class="minfo-val neon-purple">₹1,000 – ₹10,000 / 3g</span></div>
+  <div class="minfo"><span class="minfo-label">Your Silver</span><span class="minfo-val">{{ "%.4f"|format(user.silver) }}g</span></div>
+  <div class="minfo"><span class="minfo-label">Your ₹</span><span class="minfo-val">₹{{ "%.2f"|format(user.rupees) }}</span></div>
+</div>
+
+<div class="trade-grid">
+  <div class="trade-card">
+    <h3 class="trade-title buy-title">Buy Silver</h3>
+    <form method="POST">
+      <input type="hidden" name="action" value="buy">
+      <div class="form-group">
+        <label>Grams</label>
+        <input type="number" name="amount" step="0.01" min="0.01" placeholder="3.0" required id="silverBuyAmt">
+      </div>
+      <div class="cost-preview" id="silverCostPreview">Cost: —</div>
+      <button type="submit" class="btn btn-buy btn-full">Buy Silver</button>
+    </form>
+  </div>
+
+  <div class="trade-card">
+    <h3 class="trade-title sell-title">Sell Silver</h3>
+    <form method="POST">
+      <input type="hidden" name="action" value="sell">
+      <div class="form-group">
+        <label>Grams</label>
+        <input type="number" name="amount" step="0.01" min="0.01" placeholder="3.0" required>
+      </div>
+      <div class="price-note">⚡ Market price generated at sale</div>
+      <button type="submit" class="btn btn-sell btn-full">Sell Silver</button>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('silverBuyAmt').addEventListener('input', function() {
+  const amt = parseFloat(this.value) || 0;
+  const cost = amt * (1000 / 3);
+  document.getElementById('silverCostPreview').textContent = cost > 0 ? `Cost: ₹${cost.toLocaleString('en-IN', {maximumFractionDigits:2})}` : 'Cost: —';
+});
+</script>
+{% endblock %}

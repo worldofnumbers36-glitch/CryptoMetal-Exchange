@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Daily Reward{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title">🎁 Daily Reward</h2>
+</div>
+
+<div class="daily-card">
+  <div class="daily-coin">₹1</div>
+  <div class="daily-label">Daily Claim</div>
+
+  {% if can_claim %}
+  <form method="POST">
+    <button type="submit" class="btn btn-primary btn-large pulse-btn">Claim ₹1 Now!</button>
+  </form>
+  {% else %}
+  <div class="countdown-wrap">
+    <p class="countdown-label">Next claim available at:</p>
+    <div class="countdown-time" id="nextClaim" data-target="{{ next_claim.isoformat() if next_claim else '' }}">--:--:--</div>
+  </div>
+  <button class="btn btn-disabled btn-large" disabled>Already Claimed</button>
+  {% endif %}
+
+  <div class="daily-note">Come back every 24 hours to collect your free Rupee!</div>
+</div>
+
+<script>
+const el = document.getElementById('nextClaim');
+if (el && el.dataset.target) {
+  function tick() {
+    const target = new Date(el.dataset.target + 'Z');
+    const now = new Date();
+    const diff = target - now;
+    if (diff <= 0) { el.textContent = 'Available now!'; return; }
+    const h = String(Math.floor(diff/3600000)).padStart(2,'0');
+    const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+    el.textContent = `${h}:${m}:${s}`;
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+</script>
+{% endblock %}

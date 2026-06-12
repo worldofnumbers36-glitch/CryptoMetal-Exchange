@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — CryptoMetal{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title">Welcome, <span class="neon-text">{{ user.username }}</span></h2>
+  <div class="rank-badge">{{ rank }}</div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card card-inr">
+    <div class="stat-icon">₹</div>
+    <div class="stat-label">Rupees</div>
+    <div class="stat-value">₹{{ "%.2f"|format(user.rupees) }}</div>
+  </div>
+  <div class="stat-card card-btc">
+    <div class="stat-icon">₿</div>
+    <div class="stat-label">Bitcoin</div>
+    <div class="stat-value">{{ "%.6f"|format(user.bitcoin) }} BTC</div>
+  </div>
+  <div class="stat-card card-gold">
+    <div class="stat-icon">🥇</div>
+    <div class="stat-label">Gold</div>
+    <div class="stat-value">{{ "%.4f"|format(user.gold) }}g</div>
+  </div>
+  <div class="stat-card card-silver">
+    <div class="stat-icon">🥈</div>
+    <div class="stat-label">Silver</div>
+    <div class="stat-value">{{ "%.4f"|format(user.silver) }}g</div>
+  </div>
+  <div class="stat-card card-wealth full-width">
+    <div class="stat-icon">💰</div>
+    <div class="stat-label">Total Net Worth</div>
+    <div class="stat-value wealth-value">₹{{ "%.2f"|format(wealth) }}</div>
+  </div>
+</div>
+
+<h3 class="section-title">Quick Actions</h3>
+<div class="quick-actions">
+  <a href="{{ url_for('btc_market') }}" class="action-card">
+    <span class="action-icon">₿</span>
+    <span>BTC Market</span>
+  </a>
+  <a href="{{ url_for('gold_market') }}" class="action-card">
+    <span class="action-icon">🏅</span>
+    <span>Gold Market</span>
+  </a>
+  <a href="{{ url_for('silver_market') }}" class="action-card">
+    <span class="action-icon">🪙</span>
+    <span>Silver Market</span>
+  </a>
+  <a href="{{ url_for('invest') }}" class="action-card">
+    <span class="action-icon">📈</span>
+    <span>Invest</span>
+  </a>
+  <a href="{{ url_for('transfer') }}" class="action-card">
+    <span class="action-icon">↗</span>
+    <span>Transfer</span>
+  </a>
+  <a href="{{ url_for('daily') }}" class="action-card">
+    <span class="action-icon">🎁</span>
+    <span>Daily Reward</span>
+  </a>
+  <a href="{{ url_for('leaderboard') }}" class="action-card">
+    <span class="action-icon">🏆</span>
+    <span>Leaderboard</span>
+  </a>
+  <a href="{{ url_for('history') }}" class="action-card">
+    <span class="action-icon">📋</span>
+    <span>History</span>
+  </a>
+</div>
+
+<div class="rates-panel">
+  <h3 class="section-title">Live Buy Rates</h3>
+  <div class="rates-grid">
+    <div class="rate-item"><span class="rate-asset">Bitcoin</span><span class="rate-val neon-blue">₹7,500,000 / BTC</span></div>
+    <div class="rate-item"><span class="rate-asset">Gold</span><span class="rate-val neon-gold">₹15,000 / gram</span></div>
+    <div class="rate-item"><span class="rate-asset">Silver</span><span class="rate-val neon-silver">₹1,000 / 3g</span></div>
+  </div>
+  <p class="rates-note">* Sell prices are randomized at market rate</p>
+</div>
+{% endblock %}

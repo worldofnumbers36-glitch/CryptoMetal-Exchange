@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}History{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title">📋 Transaction History</h2>
+</div>
+
+{% if transactions %}
+<div class="history-table-wrap">
+  <table class="history-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Asset</th>
+        <th>Amount</th>
+        <th>Price/Rate</th>
+        <th>Result</th>
+        <th>Note</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for t in transactions %}
+    <tr>
+      <td>
+        {% set labels = {
+          'buy': '🟢 Buy',
+          'sell': '🔴 Sell',
+          'invest': '📈 Invest',
+          'transfer_out': '↗ Sent',
+          'transfer_in': '↙ Received',
+          'daily_reward': '🎁 Daily'
+        } %}
+        <span class="tx-type">{{ labels.get(t.type, t.type) }}</span>
+      </td>
+      <td>{{ t.asset or '—' }}</td>
+      <td>{{ "%.6f"|format(t.amount) if t.amount else '—' }}</td>
+      <td>{{ "₹%.2f"|format(t.price) if t.price else '—' }}</td>
+      <td class="{% if t.result and t.result > 0 %}pos{% elif t.result and t.result < 0 %}neg{% endif %}">
+        {{ "₹%.2f"|format(t.result) if t.result else '—' }}
+      </td>
+      <td>{{ t.note or '—' }}</td>
+      <td class="date-col">{{ t.created_at[:16] }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">📋</div>
+  <p>No transactions yet. Start trading!</p>
+</div>
+{% endif %}
+{% endblock %}

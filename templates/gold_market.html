@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Gold Market{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title"><span class="neon-gold">🥇</span> Gold Market</h2>
+</div>
+
+<div class="market-info-bar">
+  <div class="minfo"><span class="minfo-label">Buy Rate</span><span class="minfo-val neon-gold">₹15,000 / gram</span></div>
+  <div class="minfo"><span class="minfo-label">Sell Range</span><span class="minfo-val neon-purple">₹10,000 – ₹20,000 / gram</span></div>
+  <div class="minfo"><span class="minfo-label">Your Gold</span><span class="minfo-val">{{ "%.4f"|format(user.gold) }}g</span></div>
+  <div class="minfo"><span class="minfo-label">Your ₹</span><span class="minfo-val">₹{{ "%.2f"|format(user.rupees) }}</span></div>
+</div>
+
+<div class="trade-grid">
+  <div class="trade-card">
+    <h3 class="trade-title buy-title">Buy Gold</h3>
+    <form method="POST">
+      <input type="hidden" name="action" value="buy">
+      <div class="form-group">
+        <label>Grams</label>
+        <input type="number" name="amount" step="0.0001" min="0.0001" placeholder="1.0" required id="goldBuyAmt">
+      </div>
+      <div class="cost-preview" id="goldCostPreview">Cost: —</div>
+      <button type="submit" class="btn btn-buy btn-full">Buy Gold</button>
+    </form>
+  </div>
+
+  <div class="trade-card">
+    <h3 class="trade-title sell-title">Sell Gold</h3>
+    <form method="POST">
+      <input type="hidden" name="action" value="sell">
+      <div class="form-group">
+        <label>Grams</label>
+        <input type="number" name="amount" step="0.0001" min="0.0001" placeholder="1.0" required>
+      </div>
+      <div class="price-note">⚡ Market price generated at sale</div>
+      <button type="submit" class="btn btn-sell btn-full">Sell Gold</button>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('goldBuyAmt').addEventListener('input', function() {
+  const amt = parseFloat(this.value) || 0;
+  const cost = amt * 15000;
+  document.getElementById('goldCostPreview').textContent = cost > 0 ? `Cost: ₹${cost.toLocaleString('en-IN', {maximumFractionDigits:2})}` : 'Cost: —';
+});
+</script>
+{% endblock %}

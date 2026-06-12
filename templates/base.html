@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}CryptoMetal Exchange{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+{% if session.user_id %}
+<nav class="navbar">
+  <a href="{{ url_for('dashboard') }}" class="nav-brand">
+    <span class="brand-icon">◈</span>
+    <span>CryptoMetal</span>
+  </a>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">☰</button>
+  <div class="nav-links" id="navLinks">
+    <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+    <a href="{{ url_for('btc_market') }}" class="nav-link">₿ Bitcoin</a>
+    <a href="{{ url_for('gold_market') }}" class="nav-link">🥇 Gold</a>
+    <a href="{{ url_for('silver_market') }}" class="nav-link">🥈 Silver</a>
+    <a href="{{ url_for('invest') }}" class="nav-link">📈 Invest</a>
+    <a href="{{ url_for('transfer') }}" class="nav-link">↗ Transfer</a>
+    <a href="{{ url_for('daily') }}" class="nav-link">🎁 Daily</a>
+    <a href="{{ url_for('leaderboard') }}" class="nav-link">🏆 Ranks</a>
+    <a href="{{ url_for('notifications') }}" class="nav-link notif-link">
+      🔔{% if unread_notifications > 0 %}<span class="badge">{{ unread_notifications }}</span>{% endif %}
+    </a>
+    <a href="{{ url_for('logout') }}" class="nav-link logout-link">Exit</a>
+  </div>
+</nav>
+{% endif %}
+
+<main class="main-content">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

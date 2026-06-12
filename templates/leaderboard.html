@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Leaderboard{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="page-title">🏆 Leaderboard</h2>
+  <p class="page-sub">Top 100 players by total wealth</p>
+</div>
+
+<div class="history-table-wrap">
+  <table class="history-table leaderboard-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Player</th>
+        <th>Rank</th>
+        <th>Net Worth</th>
+        <th>₹ Rupees</th>
+        <th>BTC</th>
+        <th>Gold</th>
+        <th>Silver</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for pos, u, wealth, rank in board %}
+    <tr class="{% if u.id == session.user_id %}highlight-row{% endif %}">
+      <td class="rank-col">
+        {% if pos == 1 %}🥇
+        {% elif pos == 2 %}🥈
+        {% elif pos == 3 %}🥉
+        {% else %}{{ pos }}{% endif %}
+      </td>
+      <td><a href="{{ url_for('profile', username=u.username) }}" class="username-link">{{ u.username }}</a></td>
+      <td class="rank-tag">{{ rank }}</td>
+      <td class="wealth-col neon-text">₹{{ "%.0f"|format(wealth) }}</td>
+      <td>₹{{ "%.0f"|format(u.rupees) }}</td>
+      <td>{{ "%.4f"|format(u.bitcoin) }}</td>
+      <td>{{ "%.4f"|format(u.gold) }}g</td>
+      <td>{{ "%.4f"|format(u.silver) }}g</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
